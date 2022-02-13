@@ -1,0 +1,15 @@
+.flex {
+  display:         flex;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: #EFEFF1;
+
+  .selects {
+    display: flex;
+    gap:     1.5rem;
+
+    label {
+      margin-right: .5rem;
+    }
+  }
+}
