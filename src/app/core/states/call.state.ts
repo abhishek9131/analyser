@@ -11,7 +11,7 @@ import CallService from 'src/app/core/services/call.service';
 @Injectable({providedIn: 'root'})
 export default class CallState {
   private readonly _activeAgentCalls$   = new BehaviorSubject<Call[]>([]);
-  private readonly _activeTranscript$   = new Subject<Transcript>();
+  private readonly _activeTranscript$   = new BehaviorSubject<Transcript>(new Transcript());
   private readonly _calls$              = new BehaviorSubject<Call[]>([]);
   private readonly _matchingPercentage$ = new BehaviorSubject<number>(0);
   private readonly _transcripts$        = new BehaviorSubject<Transcript[]>([]);

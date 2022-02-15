@@ -21,7 +21,7 @@
                 <mat-select (selectionChange)="selectCall($event)" id="callTime" name="callTime"
                     formControlName="callTime">
                     <mat-option *ngFor="let call of calls.activeAgentCalls$ | async" [value]="call.id">
-                        {{call.startTime |  date:'shortDate'}} - <span *ngIf="call.customer">
+                        {{call.startTime | date:'shortDate'}} - <span *ngIf="call.customer">
                             {{call.customer.speakerName}}
                         </span>
                     </mat-option>

@@ -1,39 +1,36 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import AppComponent from './app.component';
-import { ROUTES } from './app.routing';
-import HeaderComponent from './core/components/header/header.component';
-import SubHeaderModule from './core/components/sub-header/sub-header.component';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { AppRoutingModule } from './app-routing.module';
+import SubHeaderModule from './components/sub-header/sub-header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSliderModule} from '@angular/material/slider';
-import {MatTooltipModule} from '@angular/material/tooltip';
+
+import AnalyzerComponent from './components/analyzer/analyzer.component';
+import { SelectionPendingComponent } from './components/selection-pending/selection-pending.component';
+import { MaterialModule } from './core/material.module';
+import HeaderComponent from './components/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    SubHeaderModule
+    SubHeaderModule,
+    AnalyzerComponent,
+    SelectionPendingComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(ROUTES),
     FlexLayoutModule,
-    MatFormFieldModule,
+    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    MatIconModule,
-    MatSelectModule,
-    MatSliderModule,
-    MatTooltipModule
+
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
