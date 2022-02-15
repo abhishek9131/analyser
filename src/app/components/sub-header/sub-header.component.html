@@ -32,7 +32,7 @@
 
     <div *ngIf="showslider" class="slider-container">
         MATCHING SENSITIVITY
-        <mat-slider #matcher (change)="setMatchingPercentage(matcher.value)"></mat-slider>
+        <mat-slider #matcher (change)="setMatchingPercentage(matcher.value)" value="38"></mat-slider>
         <span>{{matcher.value}}%</span>
     </div>
 </div>
