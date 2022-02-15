@@ -1,8 +1,21 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-html, body { height: 100%; }
+html,
+body {
+  height: 100%;
+}
 body {
   margin: 0;
   font-family: Roboto, sans-serif;
+}
+
+.custom-tooltip {
+  max-width: 466px !important;
+  left: 147px;
+  top: 126px;
+  background: rgba(97, 97, 97, 0.9);
+  opacity: 0.9;
+  border-radius: 2px;
+  line-height: 22px;
 }

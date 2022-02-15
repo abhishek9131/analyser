@@ -6,7 +6,7 @@ export default class Script {
   @JsonProperty({name: 'matching_line'})
   public matchingLine: number | null;
   @JsonProperty({name: 'matching_sentence'})
-  public matchingSentence: string | null;
+  public matching_sentence: string | null;
   @JsonProperty()
   public order: number;
   @JsonProperty()
@@ -21,7 +21,7 @@ export default class Script {
   constructor() {
     this.channel          = 0;
     this.matchingLine     = null;
-    this.matchingSentence = null;
+    this.matching_sentence = null;
     this.order            = 0;
     this.sentence         = null;
     this.similarity       = null;

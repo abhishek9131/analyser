@@ -1,24 +1,38 @@
 <div class="flex">
     <div class="selects">
-        <div class="select">
-            <label for="agent">Agent</label>
-            <select (change)="selectAgent($event)" id="agent" name="agent">
-                <option *ngFor="let agent of agents.agents$ | async" [value]="agent.id">{{agent.fullName}}</option>
-            </select>
-        </div>
+        <form class="form-container selects" [formGroup]="agentSelectForm">
+            <mat-form-field>
+                <mat-label>
+                    <mat-icon>supervised_user_circle</mat-icon>
+                    <span class="form-label">Agent</span>
+                </mat-label>
+                <mat-select (selectionChange)="selectAgent($event)" id="agentName" name="agentName"
+                    formControlName="agentName">
+                    <mat-option *ngFor="let agent of agents.agents$ | async" [value]="agent.id">{{agent.fullName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-        <div class="select">
-            <label for="call">Call</label>
-            <select (change)="selectCall($event)" id="call" name="call">
-                <option *ngFor="let call of calls.activeAgentCalls$ | async" [value]="call.id">{{call.startTime}}
-                </option>
-            </select>
-        </div>
+            <mat-form-field class="callTime">
+                <mat-label>
+                    <mat-icon>settings_phone</mat-icon>
+                    <span class="form-label">Call</span>
+                </mat-label>
+                <mat-select (selectionChange)="selectCall($event)" id="callTime" name="callTime"
+                    formControlName="callTime">
+                    <mat-option *ngFor="let call of calls.activeAgentCalls$ | async" [value]="call.id">
+                        {{call.startTime |  date:'shortDate'}} - <span *ngIf="call.customer">
+                            {{call.customer.speakerName}}
+                        </span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
     </div>
 
-    <div style="align-items: center; display: flex; gap: .5rem;">
+    <div *ngIf="showslider" class="slider-container">
         MATCHING SENSITIVITY
-        <input #matcher (change)="calls.setMatchingPercentage(matcher.value)"
-            [value]="calls.matchingPercentage$ | async" max="100" min="1" type="range" value="50">
+        <mat-slider #matcher (change)="setMatchingPercentage(matcher.value)"></mat-slider>
+        <span>{{matcher.value}}%</span>
     </div>
 </div>

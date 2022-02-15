@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
+import AnalyzerComponent from './analyzer/analyzer.component';
 import { SelectionPendingComponent } from './selection-pending/selection-pending.component';
 
 import SharedComponent from './shared.component';
 
 export const ROUTES: Routes = [{
-    path: 'analyzer',
-    component: SharedComponent,
+    path: 'analyzer/:userId',
+    component: AnalyzerComponent,
     loadChildren: () => import('./analyzer/analyzer.module')
         .then(m => m.AnalyzerModule)
 },

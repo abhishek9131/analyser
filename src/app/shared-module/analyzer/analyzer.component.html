@@ -2,22 +2,26 @@
   <div class="card">
     <h1>
       Real
-      <span>Matching: 32%</span>
+      <span>Alignment to the expected script: {{similarity.achieved}}%</span>
     </h1>
     <table *ngIf="calls.activeTranscript$ | async as call" width="100%">
       <thead>
-      <th>Time</th>
-      <th>Speaker</th>
-      <th>Sentence</th>
+        <th>Time</th>
+        <th>Speaker</th>
+        <th>Sentence</th>
       </thead>
       <tbody>
-      <tr *ngFor="let transcript of call.transcript">
-        <td>{{ transcript.timeFrom }}</td>
-        <td>{{ call.getSpeaker(transcript.channel) }}</td>
-        <td tooltip="61% matching with line #1 'This is a sample sentence #76'">
-          {{ transcript.sentence }}
-        </td>
-      </tr>
+        <tr *ngFor="let transcript of call.transcript">
+          <td>{{getDuration(transcript) | date:'mm:ss'}}</td>
+          <td>{{ getSpeakersName(transcript.channel, call) }}</td>
+          <td>
+            <div matTooltipClass="custom-tooltip" [matTooltip]="tooltipText" matTooltipPosition="above" (mouseover)="onHighlight(transcript, true)" (mouseout)="onHighlight(transcript, false)" [ngClass]="{
+              'matching-script': isMatchingScript(transcript), 'text-highlight': (transcript.matching_sentence && transcript.matching_sentence === hoveredScript)
+           }">
+              {{ transcript.sentence }}
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -25,9 +29,29 @@
   <div class="card">
     <h1>
       Expected
-      <span>Matching: 0%</span>
+      <span>Percent of script covered: {{similarity.expected}}%</span>
     </h1>
-    <!-- TODO: Add Expected -->
+    <table *ngIf="calls.activeTranscript$ | async as call" width="100%">
+      <thead>
+        <th>Line</th>
+        <th>Speaker</th>
+        <th>Sentence</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let expectedScript of call.script">
+          <td>{{ expectedScript.order + 1}}</td>
+          <td>Rep:</td>
+          <td>
+            <div [ngClass]="{
+              'matching-script': isMatchingScript(expectedScript),
+              'text-highlight': (expectedScript.sentence === hoveredScript)
+           }">
+              {{ expectedScript.sentence }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </section>
 

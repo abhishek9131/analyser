@@ -16,7 +16,7 @@ export default class AgentState {
       .subscribe((agents: Agent[]) => this._agents$.next(agents));
   }
 
-  public setActiveAgent(agentId: string): void {debugger
+  public setActiveAgent(agentId: string): void {
     let agent = this._agents$.value.find((agent: Agent) => agent.id === agentId);
     agent = agent? agent : new Agent();
     this._activeAgent$.next(agent);

@@ -1,8 +1,9 @@
 .flex {
-  display:         flex;
+  display: flex;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   background-color: #EFEFF1;
+  height: 56px;
 
   .selects {
     display: flex;
@@ -13,3 +14,13 @@
     }
   }
 }
+.callTime {
+  width: 316px;
+}
+.slider-container {
+  width: 666px;
+}
+.mat-slider {
+  width: 438px;
+}
+

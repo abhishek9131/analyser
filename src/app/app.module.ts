@@ -9,6 +9,12 @@ import AppComponent from './app.component';
 import { ROUTES } from './app.routing';
 import HeaderComponent from './core/components/header/header.component';
 import SubHeaderModule from './core/components/sub-header/sub-header.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -20,7 +26,14 @@ import SubHeaderModule from './core/components/sub-header/sub-header.component';
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES),
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatSelectModule,
+    MatSliderModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

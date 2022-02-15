@@ -48,6 +48,5 @@ export default class CallState {
 
   public setMatchingPercentage(value: number | string): void {
     this._matchingPercentage$.next(parseInt(`${value}`));
-    console.log('Matching %', value);
   }
 }
