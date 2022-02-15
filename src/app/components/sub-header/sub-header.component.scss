@@ -23,3 +23,15 @@
 .mat-slider {
   width: 438px;
 }
+
+:host ::ng-deep .custom-slider .mat-slider-thumb {
+  background-color: #5A5A71;
+}
+
+:host ::ng-deep .custom-slider .mat-slider-thumb-label {
+  background-color: #5A5A71;
+}
+
+:host ::ng-deep .custom-slider .mat-slider-track-fill {
+  background-color: #5A5A71;
+}

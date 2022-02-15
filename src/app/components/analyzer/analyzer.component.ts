@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import AgentFacade from 'src/app/core/facades/agent.facade';
 import CallFacade from 'src/app/core/facades/call.facade';
 import Script from 'src/app/core/models/script.model';
@@ -10,7 +11,8 @@ import Transcript from 'src/app/core/models/transcript.model';
   styleUrls: ['./analyzer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class AnalyzerComponent implements OnInit {
+export default class AnalyzerComponent implements OnInit, OnDestroy {
+  public notifier = new Subject();
   public dataSource: any[] = [];
   public dataSourceRep: any[] = [];
   public selectedSensitivity: number = 0;
@@ -27,35 +29,38 @@ export default class AnalyzerComponent implements OnInit {
     public agents: AgentFacade,
     public calls: CallFacade,
     private ref: ChangeDetectorRef
-  ) {
+  ) { }
+
+  ngOnInit(): void {
+    this.dataSource = MOCK_DATA();
+    this.dataSourceRep = MOCK_DATA().slice(-25);
+
+    this.calls.activeTranscript$
+      .pipe(takeUntil(this.notifier))
+      .subscribe((activeTranscript: Transcript) => {
+        this.activeTranscript = activeTranscript
+      });
+
+    // method to change the script covered percentage on basis of slider value
+    this.calls.matchingPercentage$
+      .pipe(takeUntil(this.notifier))
+      .subscribe((matchingPercentage: number) => {
+        this.selectedSensitivity = matchingPercentage;
+        this.scriptCovered(matchingPercentage);
+        this.ref.markForCheck();
+      });
   }
 
-  public getTooltipText(transcript: Script) {
+  getTooltipText(transcript: Script) {
     // text to show on tooltip
     if (transcript.matching_sentence && transcript.similarity && (transcript.similarity * 100) > this.selectedSensitivity) {
       const matchingScript = this.activeTranscript.script.find(script => script.sentence === transcript.matching_sentence)
-      this.tooltipText =  `${transcript.similarity * 100}% matching with line # "${matchingScript && matchingScript.order + 1}"
+      this.tooltipText = `${transcript.similarity * 100}% matching with line # "${matchingScript && matchingScript.order + 1}"
       "${transcript.matching_sentence}"`
     }
     else {
       this.tooltipText = '';
     }
-  }
-
-  public ngOnInit(): void {
-    this.dataSource = MOCK_DATA();
-    this.dataSourceRep = MOCK_DATA().slice(-25);
-
-    this.calls.activeTranscript$.subscribe((activeTranscript: Transcript) => {
-      this.activeTranscript = activeTranscript
-    });
-
-    // method to change the script covered percentage on basis of slider value
-    this.calls.matchingPercentage$.subscribe((matchingPercentage: number) => {
-      this.selectedSensitivity = matchingPercentage;
-      this.scriptCovered(matchingPercentage);
-      this.ref.markForCheck();
-    });
   }
 
   // method to highlight the similar scripts
@@ -132,6 +137,10 @@ export default class AnalyzerComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this.notifier.next('')
+    this.notifier.complete()
+  }
 }
 
 const MOCK_DATA = () => {

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import Call from 'src/app/core/models/call.model';
 import AgentFacade from '../../core/facades/agent.facade';
 import CallFacade from '../../core/facades/call.facade';
 
@@ -9,9 +11,10 @@ import CallFacade from '../../core/facades/call.facade';
   templateUrl: './sub-header.component.html',
   styleUrls: ['./sub-header.component.scss']
 })
-export default class SubHeaderComponent implements OnInit {
-  agentSelectForm: FormGroup;
-  showslider = false;
+export default class SubHeaderComponent implements OnInit, OnDestroy {
+  public notifier = new Subject();
+  public agentSelectForm: FormGroup;
+  public showslider = false;
 
   constructor(public agents: AgentFacade, public calls: CallFacade, private fb: FormBuilder, private router: Router) {
     this.agentSelectForm = this.fb.group({
@@ -20,8 +23,10 @@ export default class SubHeaderComponent implements OnInit {
     });
   }
 
-  public ngOnInit(): void {
-    this.calls.activeAgentCalls$.subscribe(calls => {
+  ngOnInit(): void {
+    this.calls.activeAgentCalls$
+    .pipe(takeUntil(this.notifier))
+    .subscribe((calls: Call[]) => {
       // Navigate user to selection pending page if user reselect the agent and call 
       if (!(calls && calls.length)) {
         this.router.navigate(['']);
@@ -34,7 +39,7 @@ export default class SubHeaderComponent implements OnInit {
     });
   }
 
-  public selectAgent(event: any): void {
+  selectAgent(event: any): void {
     // hide slider if there is no call id selected
     this.showslider = false;
     
@@ -48,7 +53,7 @@ export default class SubHeaderComponent implements OnInit {
     }
   };
 
-  public selectCall(event: any): void {
+  selectCall(event: any): void {
     // show sensitivity slider only when call id is selected 
     this.showslider = true;
     this.calls.selectCall(event.value);
@@ -59,4 +64,10 @@ export default class SubHeaderComponent implements OnInit {
   setMatchingPercentage (machtValue: number) {
     this.calls.setMatchingPercentage(machtValue)
   }
+
+  ngOnDestroy() {
+    this.notifier.next('')
+    this.notifier.complete()
+  }
+
 }
